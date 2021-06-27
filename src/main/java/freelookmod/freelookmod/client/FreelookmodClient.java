@@ -11,6 +11,8 @@ import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Environment(EnvType.CLIENT)
 public class FreelookmodClient implements ClientModInitializer {
 
@@ -20,15 +22,20 @@ public class FreelookmodClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("FreeLook", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
+        AtomicBoolean first = new AtomicBoolean(false);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            float yaw_o= 0;
-            float pitch_o = 0;
+
             if(freeLook.isPressed()){
                 MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
                 isFreeLooking = true;
-            }else{
+                first.set(true);
+            }else if(first.get()){
                 isFreeLooking = false;
-                MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
+
+                    MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
+                    first.set(false);
+
+
             }
 //        while(freeLook.wasPressed()){
 //
