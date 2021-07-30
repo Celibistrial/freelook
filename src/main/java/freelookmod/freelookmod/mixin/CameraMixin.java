@@ -1,7 +1,7 @@
 package freelookmod.freelookmod.mixin;
 
 
-import freelookmod.freelookmod.CameraOverriddenEntity;
+import freelookmod.freelookmod.CameraControl;
 import freelookmod.freelookmod.client.FreelookmodClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
@@ -33,16 +33,16 @@ public abstract class CameraMixin {
         if (!(cameraEntity instanceof ClientPlayerEntity)) return;
 
         if (FreelookmodClient.isFreeLooking) {
-            CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;
+            CameraControl cameraControl = (CameraControl) cameraEntity;
             MinecraftClient client = MinecraftClient.getInstance();
 
             if (firsttime && client.player != null) {
-                cameraOverriddenEntity.setCameraPitch(client.player.pitch);
-                cameraOverriddenEntity.setCameraYaw(client.player.yaw);
+                cameraControl.setCameraPitch(client.player.pitch);
+                cameraControl.setCameraYaw(client.player.yaw);
                 firsttime = false;
             }
 
-            this.setRotation(cameraOverriddenEntity.getCameraYaw(), cameraOverriddenEntity.getCameraPitch());
+            this.setRotation(cameraControl.getCameraYaw(), cameraControl.getCameraPitch());
         } else {
             firsttime = true;
         }

@@ -1,6 +1,6 @@
 package freelookmod.freelookmod;
 
-public interface CameraOverriddenEntity {
+public interface CameraControl {
 	float getCameraPitch();
 	float getCameraYaw();
 
