@@ -14,9 +14,6 @@
   "entrypoints": {
     "client": [
       "freelookmod.freelookmod.client.FreelookmodClient"
-    ],
-    "main": [
-      "freelookmod.freelookmod.Freelookmod"
     ]
   },
   "mixins": [
