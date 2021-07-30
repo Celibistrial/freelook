@@ -6,6 +6,7 @@ import freelookmod.freelookmod.client.FreelookmodClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,25 +22,29 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.BlockView;
 @Mixin(Camera.class)
 public abstract class CameraMixin {
+    @Unique
     boolean firsttime = true;
+
     @Shadow
-    public abstract void setRotation(float yaw, float pitch);
+    protected abstract void setRotation(float yaw, float pitch);
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 0, shift = At.Shift.AFTER))
     public void lockRotation(BlockView focusedBlock, Entity cameraEntity, boolean isThirdPerson, boolean isFrontFacing, float f, CallbackInfo ci) {
-        if (FreelookmodClient.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
+        if (!(cameraEntity instanceof ClientPlayerEntity)) return;
+
+        if (FreelookmodClient.isFreeLooking) {
             CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;
-            if(firsttime == true&& MinecraftClient.getInstance().player != null){
-                cameraOverriddenEntity.setCameraPitch(MinecraftClient.getInstance().player.pitch);
-                cameraOverriddenEntity.setCameraYaw(MinecraftClient.getInstance().player.yaw);
+            MinecraftClient client = MinecraftClient.getInstance();
+
+            if (firsttime && client.player != null) {
+                cameraOverriddenEntity.setCameraPitch(client.player.pitch);
+                cameraOverriddenEntity.setCameraYaw(client.player.yaw);
                 firsttime = false;
             }
-            this.setRotation(cameraOverriddenEntity.getCameraYaw(), cameraOverriddenEntity.getCameraPitch());
 
-        }
-        if(!FreelookmodClient.isFreeLooking && cameraEntity instanceof ClientPlayerEntity){
+            this.setRotation(cameraOverriddenEntity.getCameraYaw(), cameraOverriddenEntity.getCameraPitch());
+        } else {
             firsttime = true;
         }
     }
-
 }
