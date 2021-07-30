@@ -20,6 +20,7 @@ public class EntityMixin implements CameraControl {
 	@Unique
 	private float cameraYaw;
 
+	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
 	public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
 		if (!FreelookmodClient.isFreeLooking || !((Object) this instanceof ClientPlayerEntity)) return;
@@ -29,7 +30,7 @@ public class EntityMixin implements CameraControl {
 
 		this.cameraPitch = MathHelper.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
 		this.cameraYaw += (float) yawDelta;
-	
+
 		ci.cancel();
 	}
 
