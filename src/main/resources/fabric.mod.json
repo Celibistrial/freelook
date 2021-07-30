@@ -8,7 +8,7 @@
     "Celibistrial"
   ],
   "contact": {},
-  "license": "MIT",
+  "license": "GNU",
   "icon": "assets/freelook/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -25,6 +25,6 @@
   "depends": {
     "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "1.16.5"
+    "minecraft": "1.16.x"
   }
 }
