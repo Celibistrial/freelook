@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class FreelookmodClient implements ClientModInitializer {
 
     public static boolean isFreeLooking = false;
+    private static Perspective lastPerspective;
 
     @Override
     public void onInitializeClient() {
@@ -24,11 +25,14 @@ public class FreelookmodClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (freeLook.isPressed()) {
-                client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
-                isFreeLooking = true;
+                if (!isFreeLooking) { // only execute on the first tick
+                    lastPerspective = client.options.getPerspective();
+                    client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+                    isFreeLooking = true;
+                }
             } else if (isFreeLooking) {
                 isFreeLooking = false;
-                client.options.setPerspective(Perspective.FIRST_PERSON);
+                client.options.setPerspective(lastPerspective);
             }
         });
     }
