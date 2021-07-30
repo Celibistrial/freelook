@@ -24,7 +24,12 @@ public class FreelookmodClient implements ClientModInitializer {
             if (freeLook.isPressed()) {
                 if (!isFreeLooking) { // only execute when starting to freelook
                     lastPerspective = client.options.getPerspective();
-                    client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+
+                    // switch from first to third person
+                    if (lastPerspective == Perspective.FIRST_PERSON) {
+                        client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+                    }
+
                     isFreeLooking = true;
                 }
             } else if (isFreeLooking) { // only execute when stopping to freelook
