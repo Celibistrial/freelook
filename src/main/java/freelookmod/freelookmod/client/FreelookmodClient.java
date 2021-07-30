@@ -20,44 +20,16 @@ public class FreelookmodClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
         KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("FreeLook", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
-        AtomicBoolean first = new AtomicBoolean(false);
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-
-            if(freeLook.isPressed()){
-                MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
+            if (freeLook.isPressed()) {
+                client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
                 isFreeLooking = true;
-                first.set(true);
-            }else if(first.get()){
+            } else if (isFreeLooking) {
                 isFreeLooking = false;
-
-                    MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
-                    first.set(false);
-
-
+                client.options.setPerspective(Perspective.FIRST_PERSON);
             }
-//        while(freeLook.wasPressed()){
-//
-//
-//            if(isFreeLooking){
-//                MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
-//
-//                isFreeLooking = false;
-//            }
-//            else if (!isFreeLooking){
-//                MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
-//
-//
-//                isFreeLooking = true;
-//            }
-//        }
-
-
         });
-
-
     }
-
-
 }
