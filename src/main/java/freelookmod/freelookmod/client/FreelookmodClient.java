@@ -25,12 +25,12 @@ public class FreelookmodClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (freeLook.isPressed()) {
-                if (!isFreeLooking) { // only execute on the first tick
+                if (!isFreeLooking) { // only execute when starting to freelook
                     lastPerspective = client.options.getPerspective();
                     client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
                     isFreeLooking = true;
                 }
-            } else if (isFreeLooking) {
+            } else if (isFreeLooking) { // only execute when stopping to freelook
                 isFreeLooking = false;
                 client.options.setPerspective(lastPerspective);
             }
