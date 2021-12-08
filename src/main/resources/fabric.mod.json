@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "freelook",
+  "version": "${version}",
+
+  "name": "freelook",
+  "description": "T",
+  "authors": [
+    "Celibistrial"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "GNU",
+  "icon": "assets/freelook/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "freelook.freelook.client.FreelookmodClient"
+    ],
+    "main": [
+      "freelook.freelook.ExampleMod"
+    ]
+  },
+  "mixins": [
+    "freelook.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

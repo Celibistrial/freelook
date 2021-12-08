@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "freelook.freelook.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "CameraMixin",
+    "EntityMixin",
+    "TitleScreenMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
