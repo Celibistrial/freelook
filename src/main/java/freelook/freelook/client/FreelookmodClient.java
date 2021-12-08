@@ -11,6 +11,7 @@ import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Environment(EnvType.CLIENT)
@@ -22,7 +23,12 @@ public class FreelookmodClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
+        File f = new File("t.txt");
+        if(f.isFile()){
+            isToggle = true;
+        }else if(!f.isFile()){
+            isToggle = false;
+        }
         KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("FreeLook_HoldKey", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

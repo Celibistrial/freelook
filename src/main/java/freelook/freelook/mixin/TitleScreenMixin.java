@@ -36,6 +36,7 @@ public class TitleScreenMixin extends Screen {
     @Inject(at = @At("RETURN"),method = "initWidgetsNormal")
     private void TitleScreenmix(int y, int spacingY, CallbackInfo ci) throws FileNotFoundException {
 
+
         String msg;
         if(FreelookmodClient.isToggle == true){
             msg = "Freelook is set to toggle";
@@ -47,10 +48,21 @@ public class TitleScreenMixin extends Screen {
             JsonObject value = new JsonObject();
             if(FreelookmodClient.isToggle){
                 FreelookmodClient.isToggle = false;
+                File fee = new File("t.txt");
 
+                fee.delete();
 
             }else {
                 FreelookmodClient.isToggle = true;
+
+                try {
+                    FileWriter fe = new FileWriter("t.txt");
+                    fe.write(".");
+                    fe.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
             }
             Screen screen = new TitleScreen();
