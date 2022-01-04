@@ -26,10 +26,10 @@ import java.io.*;
 import java.util.Scanner;
 
 @Mixin(TitleScreen.class)
-public class TitleScreenMixin extends Screen {
+public class ScreenMixin extends Screen {
+//not using this class anymore
 
-
-    protected TitleScreenMixin(Text title)  {
+    protected ScreenMixin(Text title)  {
         super(title);
 
     }
@@ -38,7 +38,7 @@ public class TitleScreenMixin extends Screen {
 
 
         String msg;
-        if(FreelookmodClient.isToggle == true){
+        if(FreelookmodClient.isToggle){
             msg = "Freelook is set to toggle";
         }
         else {
@@ -66,6 +66,7 @@ public class TitleScreenMixin extends Screen {
 
             }
             Screen screen = new TitleScreen();
+            assert this.client != null;
             this.client.setScreen(screen);
 
         }));
