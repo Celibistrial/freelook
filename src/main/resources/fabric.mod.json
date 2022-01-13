@@ -2,20 +2,17 @@
   "schemaVersion": 1,
   "id": "freelook",
   "version": "${version}",
-
   "name": "freelook",
   "description": "T",
   "authors": [
     "Celibistrial"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
+    "sources": "https://github.com/Celibistrial/freelook"
   },
-
   "license": "GNU",
   "icon": "assets/freelook/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -23,12 +20,14 @@
     ],
     "main": [
       "freelook.freelook.ExampleMod"
+    ],
+    "modmenu": [
+      "freelook.freelook.config.ModMenuIntegration"
     ]
   },
   "mixins": [
     "freelook.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
