@@ -1,2 +1,4 @@
-Freelook 1.18 mod go to my curse forge page to download the build
-https://www.curseforge.com/minecraft/mc-mods/freelook-fabric
+![Downloads](https://img.shields.io/badge/downloads-35k-green.svg)
+
+Download [here](https://www.curseforge.com/minecraft/mc-mods/freelook-fabric)
+
