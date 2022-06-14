@@ -11,7 +11,7 @@
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
     "sources": "https://github.com/Celibistrial/freelook"
   },
-  "license": "AGPL-3.0",
+  "license": "GNU GPLv3",
   "icon": "assets/freelook/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -31,8 +31,8 @@
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
-    "minecraft": "1.18.x",
-    "java": ">=16"
+    "minecraft": "1.19.x",
+    "java": ">=17"
   },
   "suggests": {
     "another-mod": "*"

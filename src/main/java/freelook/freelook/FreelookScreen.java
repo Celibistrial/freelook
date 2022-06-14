@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import freelook.freelook.VariableStorage;
 import org.lwjgl.system.CallbackI;
@@ -21,7 +21,8 @@ public class FreelookScreen extends Screen {
     }
 
     public FreelookScreen() {
-        super(new LiteralText("Freelook Config"));
+        super(Text.of("Freelook Config"));
+
     }
 
     public void init(){
@@ -32,7 +33,7 @@ public class FreelookScreen extends Screen {
         else {
             msg = "Freelook is set to hold";
         }
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-100, 200, 20, new LiteralText(msg), (button) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-100, 200, 20, Text.of(msg), (button) -> {
             JsonObject value = new JsonObject();
             if(FreelookmodClient.isToggle){
                 FreelookmodClient.isToggle = false;
@@ -74,7 +75,7 @@ public class FreelookScreen extends Screen {
         };
 
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-50, 200, 20, new LiteralText(msg), (button) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-50, 200, 20, Text.of(msg), (button) -> {
             if(!(wrapper.perspective >= 3)) {
                 wrapper.perspective += 1;
             }else wrapper.perspective = 1;
