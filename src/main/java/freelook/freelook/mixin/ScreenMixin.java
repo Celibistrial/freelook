@@ -13,9 +13,8 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,7 +43,7 @@ public class ScreenMixin extends Screen {
         else {
             msg = "Freelook is set to hold";
         }
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, y-25, 200, 20, new LiteralText(msg), (button) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, y-25, 200, 20, Text.of(msg), (button) -> {
             JsonObject value = new JsonObject();
             if(FreelookmodClient.isToggle){
                 FreelookmodClient.isToggle = false;
