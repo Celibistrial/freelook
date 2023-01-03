@@ -3,13 +3,9 @@ package freelook.freelook;
 import com.google.gson.JsonObject;
 import freelook.freelook.client.FreelookmodClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import freelook.freelook.VariableStorage;
-import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,7 +29,7 @@ public class FreelookScreen extends Screen {
         else {
             msg = "Freelook is set to hold";
         }
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-100, 200, 20, Text.of(msg), (button) -> {
+        this.addDrawableChild(new ButtonWidget.Builder(Text.of(msg), (button) -> {
             JsonObject value = new JsonObject();
             if(FreelookmodClient.isToggle){
                 FreelookmodClient.isToggle = false;
@@ -58,7 +54,7 @@ public class FreelookScreen extends Screen {
             assert this.client != null;
             this.client.setScreen(screen);
 
-        }));
+        }).dimensions(this.width / 2 - 100, this.height/2-100, 200, 20).build());
         var wrapper = new Object(){ int perspective = 3; };
         VariableStorage variableStorage = new VariableStorage();
         try {
@@ -75,7 +71,7 @@ public class FreelookScreen extends Screen {
         };
 
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height/2-50, 200, 20, Text.of(msg), (button) -> {
+        this.addDrawableChild(new ButtonWidget.Builder(Text.of(msg), (button) -> {
             if(!(wrapper.perspective >= 3)) {
                 wrapper.perspective += 1;
             }else wrapper.perspective = 1;
@@ -88,7 +84,7 @@ public class FreelookScreen extends Screen {
             assert this.client != null;
             this.client.setScreen(screen);
 
-        }));
+        }).dimensions(this.width / 2 - 100, this.height/2-50, 200, 20).build());
 
     }
 
