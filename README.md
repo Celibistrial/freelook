@@ -51,7 +51,7 @@ gradlew build
 
 ## Contributing
 
-Feel free to make a pull request adding new features or improving the code.
+Feel free to make a pull request adding new features or improving the code.(PRs updating the mod to latest version of minecraft are appreciated)
 
 
 ## License
