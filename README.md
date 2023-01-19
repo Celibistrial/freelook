@@ -1,5 +1,9 @@
-![Downloads](https://img.shields.io/badge/downloads-55k-green.svg)
 
+<div align="center">
+
+  ![Downloads](https://img.shields.io/badge/downloads-55k-green.svg)
+  
+</div>
 
 
 # Freelook
