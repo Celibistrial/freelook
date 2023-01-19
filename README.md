@@ -52,5 +52,5 @@ Feel free to make a pull request adding new features or improving the code.
 
 ## License
 
-This project is licensed under the GNU GPT3 License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details
 
