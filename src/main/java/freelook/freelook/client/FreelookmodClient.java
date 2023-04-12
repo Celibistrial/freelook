@@ -35,8 +35,8 @@ public class FreelookmodClient implements ClientModInitializer {
         }else if(!f.isFile()){
             isToggle = false;
         }
-        KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("FreeLook_HoldKey", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
-        KeyBinding freeLookScreen = KeyBindingHelper.registerKeyBinding(new KeyBinding("FreeLook_GuiKey", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
+        KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("Activate Freelook", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "FreeLookMod"));
+        KeyBinding freeLookScreen = KeyBindingHelper.registerKeyBinding(new KeyBinding("Open Freelook menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
 
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
