@@ -2,6 +2,7 @@ package freelook.freelook;
 
 import com.google.gson.JsonObject;
 import freelook.freelook.client.FreelookmodClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -89,8 +90,8 @@ public class FreelookScreen extends Screen {
     }
 
     @Override
-    public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta) {
-        this.renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(final DrawContext drawContext, final int mouseX, final int mouseY, final float delta) {
+        this.renderBackground(drawContext);
+        super.render(drawContext, mouseX, mouseY, delta);
     }
 }
