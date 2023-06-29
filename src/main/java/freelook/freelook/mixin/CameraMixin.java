@@ -25,14 +25,14 @@ import net.minecraft.world.BlockView;
 public abstract class CameraMixin {
     boolean firsttime = true;
     @Shadow
-    public abstract void setRotation(float yaw, float pitch);
+    protected abstract void setRotation(float yaw, float pitch);
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 0, shift = At.Shift.AFTER))
     public void lockRotation(BlockView focusedBlock, Entity cameraEntity, boolean isThirdPerson, boolean isFrontFacing, float f, CallbackInfo ci) {
         if (FreelookmodClient.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
             CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;
 
-            if(firsttime == true&& MinecraftClient.getInstance().player != null){
+            if(firsttime && MinecraftClient.getInstance().player != null){
                 cameraOverriddenEntity.setCameraPitch(MinecraftClient.getInstance().player.getPitch());
                 cameraOverriddenEntity.setCameraYaw(MinecraftClient.getInstance().player.getYaw());
                 firsttime = false;
