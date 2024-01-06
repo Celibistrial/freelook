@@ -19,7 +19,6 @@ public class FreelookScreen extends Screen {
 
     public FreelookScreen() {
         super(Text.of("Freelook Config"));
-
     }
 
     public void init(){
@@ -91,7 +90,7 @@ public class FreelookScreen extends Screen {
 
     @Override
     public void render(final DrawContext drawContext, final int mouseX, final int mouseY, final float delta) {
-        this.renderBackground(drawContext);
+        this.renderBackground(drawContext,mouseX,mouseY,delta);
         super.render(drawContext, mouseX, mouseY, delta);
     }
 }
