@@ -20,7 +20,6 @@ import org.lwjgl.system.CallbackI;
 
 @Environment(EnvType.CLIENT)
 public class FreelookmodClient implements ClientModInitializer {
-
     public static boolean isFreeLooking = false;
     public static boolean isToggle = false;
     private static Perspective lastPerspective;
