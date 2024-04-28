@@ -3,7 +3,7 @@
   "id": "freelook",
   "version": "${version}",
   "name": "freelook",
-  "description": "T",
+  "description": "A mod which allows player to turn their head without changing the direction in which you are moving",
   "authors": [
     "Celibistrial"
   ],
@@ -13,13 +13,13 @@
   },
   "license": "GNU GPLv3",
   "icon": "assets/freelook/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
-      "freelook.freelook.client.FreelookmodClient"
+      "freelook.freelook.client.FreeLookModClient"
     ],
     "main": [
-      "freelook.freelook.Freelookmod"
+      "freelook.freelook.FreeLookMod"
     ],
     "modmenu": [
       "freelook.freelook.config.ModMenuIntegration"
@@ -29,12 +29,9 @@
     "freelook.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.17",
+    "fabricloader": ">=0.15.10",
     "fabric": "*",
-    "minecraft": "1.20.x",
-    "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "minecraft": "1.20.5",
+    "java": ">=21"
   }
 }

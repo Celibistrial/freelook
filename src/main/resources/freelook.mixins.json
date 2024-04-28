@@ -7,8 +7,6 @@
     "CameraMixin",
     "EntityMixin"
   ],
-  "client": [
-  ],
   "injectors": {
     "defaultRequire": 1
   }
