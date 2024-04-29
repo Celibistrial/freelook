@@ -1,9 +1,9 @@
 package freelook.freelook;
 
 public interface CameraOverriddenEntity {
-	float getCameraPitch();
-	float getCameraYaw();
+	float freelook$getCameraPitch();
+	float freelook$getCameraYaw();
 
-	void setCameraPitch(float pitch);
-	void setCameraYaw(float yaw);
+	void freelook$setCameraPitch(float pitch);
+	void freelook$setCameraYaw(float yaw);
 }

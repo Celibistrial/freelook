@@ -52,7 +52,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.21 and upwards uses Java 17.
+	// Minecraft 1.20.5 and upwards uses Java 21.
 	it.options.release = 21
 }
 
