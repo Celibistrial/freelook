@@ -2,10 +2,17 @@
   "schemaVersion": 1,
   "id": "freelook",
   "version": "${version}",
-  "name": "freelook",
+  "name": "Freelook",
   "description": "A mod which allows player to turn their head without changing the direction in which you are moving",
   "authors": [
     "Celibistrial"
+  ],
+  "contributors": [
+    "BoBkiNN",
+    "Fourmisain",
+    "fantahund",
+    "TimDev9492",
+    "Siratox"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
@@ -16,9 +23,6 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "freelook.freelook.client.FreeLookModClient"
-    ],
-    "main": [
       "freelook.freelook.FreeLookMod"
     ],
     "modmenu": [
@@ -30,8 +34,6 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.10",
-    "fabric": "*",
-    "minecraft": "1.20.5",
-    "java": ">=21"
+    "minecraft": "1.20.x"
   }
 }

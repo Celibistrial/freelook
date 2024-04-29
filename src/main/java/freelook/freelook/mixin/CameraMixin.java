@@ -2,7 +2,7 @@ package freelook.freelook.mixin;
 
 
 import freelook.freelook.CameraOverriddenEntity;
-import freelook.freelook.client.FreeLookModClient;
+import freelook.freelook.FreeLookMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,19 +25,19 @@ public abstract class CameraMixin {
     protected abstract void setRotation(float yaw, float pitch);
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 0, shift = At.Shift.AFTER))
-    public void lockRotation(BlockView focusedBlock, Entity cameraEntity, boolean isThirdPerson, boolean isFrontFacing, float f, CallbackInfo ci) {
-        if (FreeLookModClient.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
+    public void lockRotation(BlockView focusedBlock, Entity cameraEntity, boolean isThirdPerson, boolean isFrontFacing, float tickDelta, CallbackInfo ci) {
+        if (FreeLookMod.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
             CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;
 
             if (firstTime && MinecraftClient.getInstance().player != null) {
-                cameraOverriddenEntity.setCameraPitch(MinecraftClient.getInstance().player.getPitch());
-                cameraOverriddenEntity.setCameraYaw(MinecraftClient.getInstance().player.getYaw());
+                cameraOverriddenEntity.freelook$setCameraPitch(MinecraftClient.getInstance().player.getPitch());
+                cameraOverriddenEntity.freelook$setCameraYaw(MinecraftClient.getInstance().player.getYaw());
                 firstTime = false;
             }
-            this.setRotation(cameraOverriddenEntity.getCameraYaw(), cameraOverriddenEntity.getCameraPitch());
+            this.setRotation(cameraOverriddenEntity.freelook$getCameraYaw(), cameraOverriddenEntity.freelook$getCameraPitch());
 
         }
-        if (!FreeLookModClient.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
+        if (!FreeLookMod.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
             firstTime = true;
         }
     }

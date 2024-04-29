@@ -1,12 +1,11 @@
 package freelook.freelook.mixin;
 
 import freelook.freelook.CameraOverriddenEntity;
-import freelook.freelook.client.FreeLookModClient;
+import freelook.freelook.FreeLookMod;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,38 +21,39 @@ public class EntityMixin implements CameraOverriddenEntity {
 
 	@Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
 	public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
-		if (!FreeLookModClient.isFreeLooking || !((Object) this instanceof ClientPlayerEntity)) return;
+        //noinspection ConstantValue// IntelliJ is incorrect here, this code block is reachable
+        if (FreeLookMod.isFreeLooking && (Object) this instanceof ClientPlayerEntity) {
+            double pitchDelta = (yDelta * 0.15);
+            double yawDelta = (xDelta * 0.15);
 
-		double pitchDelta = (yDelta * 0.15);
-		double yawDelta = (xDelta * 0.15);
+            this.cameraPitch = MathHelper.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
+            this.cameraYaw += (float) yawDelta;
 
-		this.cameraPitch = MathHelper.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
-		this.cameraYaw += (float) yawDelta;
-
-		ci.cancel();
-	}
+            ci.cancel();
+        }
+    }
 
 	@Override
 	@Unique
-	public float getCameraPitch() {
+	public float freelook$getCameraPitch() {
 		return this.cameraPitch;
 	}
 
 	@Override
 	@Unique
-	public float getCameraYaw() {
+	public float freelook$getCameraYaw() {
 		return this.cameraYaw;
 	}
 
 	@Override
 	@Unique
-	public void setCameraPitch(float pitch) {
+	public void freelook$setCameraPitch(float pitch) {
 		this.cameraPitch = pitch;
 	}
 
 	@Override
 	@Unique
-	public void setCameraYaw(float yaw) {
+	public void freelook$setCameraYaw(float yaw) {
 		this.cameraYaw = yaw;
 	}
 }
