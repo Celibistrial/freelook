@@ -1,6 +1,6 @@
-package freelook.freelook.client;
+package freelook.freelook;
 
-import freelook.freelook.FreelookScreen;
+import freelook.freelook.config.FreeLookConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,86 +12,64 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import freelook.freelook.VariableStorage;
-import org.lwjgl.system.CallbackI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Environment(EnvType.CLIENT)
-public class FreelookmodClient implements ClientModInitializer {
+public class FreeLookMod implements ClientModInitializer {
+    public static final Logger LOGGER = LoggerFactory.getLogger("Freelook");
     public static boolean isFreeLooking = false;
-    public static boolean isToggle = false;
     private static Perspective lastPerspective;
+    public static final FreeLookConfig config = new FreeLookConfig();
+    private KeyBinding freeLookKeyBind;
+    private KeyBinding freeLookScreenKeyBind;
 
     @Override
     public void onInitializeClient() {
-        VariableStorage variableStorage = new VariableStorage();
-        File f = new File("t.txt");
-        if(f.isFile()){
-            isToggle = true;
-        }else if(!f.isFile()){
-            isToggle = false;
-        }
-        KeyBinding freeLook = KeyBindingHelper.registerKeyBinding(new KeyBinding("Activate Freelook", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "FreeLookMod"));
-        KeyBinding freeLookScreen = KeyBindingHelper.registerKeyBinding(new KeyBinding("Open Freelook menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "FreeLookMod"));
+        config.load();
+        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "freelook.key.category"));
+        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "freelook.key.category"));
 
+        ClientTickEvents.END_CLIENT_TICK.register(this::onTickEnd);
+    }
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-        if(freeLookScreen.isPressed()){
+    private void onTickEnd(MinecraftClient client){
+        if (freeLookScreenKeyBind.isPressed()) {
             Screen screen = new FreelookScreen();
             client.setScreen(screen);
         }
-        if(!isToggle) {
-
-            if (freeLook.isPressed()) {
+        if (!config.isToggle()) {
+            if (freeLookKeyBind.isPressed()) {
                 if (!isFreeLooking) { // only execute when starting to freelook
                     lastPerspective = client.options.getPerspective();
 
                     // switch from first to third person
                     if (lastPerspective == Perspective.FIRST_PERSON) {
-                        try {
-                            client.options.setPerspective(variableStorage.getStoredPerspective());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        client.options.setPerspective(config.getPerspective());
                     }
-
                     isFreeLooking = true;
                 }
             } else if (isFreeLooking) { // only execute when stopping to freelook
                 isFreeLooking = false;
                 client.options.setPerspective(lastPerspective);
             }
-        }
-        else {
-            if (freeLook.wasPressed()) {
+        } else {
+            if (freeLookKeyBind.wasPressed()) {
                 if (!isFreeLooking) { // only execute when starting to freelook
                     lastPerspective = client.options.getPerspective();
 
                     // switch from first to third person
                     if (lastPerspective == Perspective.FIRST_PERSON) {
-                        try {
-                            client.options.setPerspective(variableStorage.getStoredPerspective());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        client.options.setPerspective(config.getPerspective());
                     }
 
                     isFreeLooking = true;
-                } else if (freeLook.isPressed()) {
+                } else if (freeLookKeyBind.isPressed()) {
                     isFreeLooking = false;
                     client.options.setPerspective(lastPerspective);
                 }
             }
         }
-
-
-
-        });
-
-
     }
-
 
 }
