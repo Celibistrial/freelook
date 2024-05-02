@@ -1,0 +1,11 @@
+{
+  "freelook.key.category": "Freelook",
+  "freelook.key.activate": "Activate Freelook",
+  "freelook.key.menu": "Open Freelook menu",
+  "freelook.menu.toggle": "Freelook is set to toggle",
+  "freelook.menu.hold": "Freelook is set to hold",
+  "freelook.menu.perspective.first": "Freelook is set to first person",
+  "freelook.menu.perspective.second": "Freelook is set to second person",
+  "freelook.menu.perspective.third": "Freelook is set to third person",
+  "freelook.menu.title": "Freelook Config"
+}
