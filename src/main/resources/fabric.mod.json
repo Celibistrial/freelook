@@ -12,7 +12,8 @@
     "Fourmisain",
     "fantahund",
     "TimDev9492",
-    "Siratox"
+    "Siratox",
+    "Seeloewen"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
@@ -33,7 +34,7 @@
     "freelook.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.10",
-    "minecraft": "1.20.x"
+    "fabricloader": ">=0.15.11",
+    "minecraft": "1.21.x"
   }
 }
