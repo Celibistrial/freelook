@@ -23,8 +23,9 @@ public abstract class CameraMixin {
 
     @Shadow
     protected abstract void setRotation(float yaw, float pitch);
-
-    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 0, shift = At.Shift.AFTER))
+// I used to know how mixins work... used to.
+// 1.21.2 broke something. Changing ordinal from 0 to 1 fixed it, I don't know why
+    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 1, shift = At.Shift.AFTER))
     public void lockRotation(BlockView focusedBlock, Entity cameraEntity, boolean isThirdPerson, boolean isFrontFacing, float tickDelta, CallbackInfo ci) {
         if (FreeLookMod.isFreeLooking && cameraEntity instanceof ClientPlayerEntity) {
             CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;

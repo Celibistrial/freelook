@@ -30,6 +30,7 @@ public class EntityMixin implements CameraOverriddenEntity {
             this.cameraYaw += (float) yawDelta;
 
             ci.cancel();
+
         }
     }
 
