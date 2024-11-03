@@ -33,43 +33,38 @@ public class FreeLookMod implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(this::onTickEnd);
     }
 
-    private void onTickEnd(MinecraftClient client){
+    private void onTickEnd(MinecraftClient client) {
         if (freeLookScreenKeyBind.isPressed()) {
             Screen screen = new FreelookScreen();
             client.setScreen(screen);
         }
         if (!config.isToggle()) {
-            if (freeLookKeyBind.isPressed()) {
-                if (!isFreeLooking) { // only execute when starting to freelook
-                    lastPerspective = client.options.getPerspective();
-
-                    // switch from first to third person
-                    if (lastPerspective == Perspective.FIRST_PERSON) {
-                        client.options.setPerspective(config.getPerspective());
-                    }
-                    isFreeLooking = true;
-                }
-            } else if (isFreeLooking) { // only execute when stopping to freelook
-                isFreeLooking = false;
-                client.options.setPerspective(lastPerspective);
+            if (freeLookKeyBind.isPressed() && !isFreeLooking) {
+                startFreeLooking(client);
+            } else if (!freeLookKeyBind.isPressed() && isFreeLooking) {
+                stopFreeLooking(client);
             }
-        } else {
-            if (freeLookKeyBind.wasPressed()) {
-                if (!isFreeLooking) { // only execute when starting to freelook
-                    lastPerspective = client.options.getPerspective();
-
-                    // switch from first to third person
-                    if (lastPerspective == Perspective.FIRST_PERSON) {
-                        client.options.setPerspective(config.getPerspective());
-                    }
-
-                    isFreeLooking = true;
-                } else if (freeLookKeyBind.isPressed()) {
-                    isFreeLooking = false;
-                    client.options.setPerspective(lastPerspective);
-                }
+        } else if (freeLookKeyBind.wasPressed()) {
+            if (!isFreeLooking) {
+                startFreeLooking(client);
+            } else if (freeLookKeyBind.isPressed()) {
+                stopFreeLooking(client);
             }
         }
+    }
+
+    private void startFreeLooking(MinecraftClient client) {
+        lastPerspective = client.options.getPerspective();
+        // only switch to configured perspective if in first person, looks weird otherwise
+        if (lastPerspective == Perspective.FIRST_PERSON) {
+            client.options.setPerspective(config.getPerspective());
+        }
+        isFreeLooking = true;
+    }
+
+    private void stopFreeLooking(MinecraftClient client) {
+        isFreeLooking = false;
+        client.options.setPerspective(lastPerspective);
     }
 
 }
