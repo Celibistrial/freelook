@@ -1,11 +1,11 @@
 {
-  "freelook.key.category": "Freelook 《自由視角》",
+  "freelook.key.category": "Freelook《自由視角》",
   "freelook.key.activate": "啟動自由視角",
   "freelook.key.menu": "開啟自由視角選單",
-  "freelook.menu.toggle": "自由視角設定為切換",
-  "freelook.menu.hold": "自由視角設定為按住",
-  "freelook.menu.perspective.first": "自由視角設定為第一人稱",
-  "freelook.menu.perspective.second": "自由視角設定為第二人稱",
-  "freelook.menu.perspective.third": "自由視角設定為第三人稱",
-  "freelook.menu.title": "Freelook 《自由視角》設定"
+  "freelook.menu.toggle": "自由視角設為切換模式",
+  "freelook.menu.hold": "自由視角設為按住模式",
+  "freelook.menu.perspective.first": "自由視角設為第一人稱",
+  "freelook.menu.perspective.second": "自由視角設為第二人稱",
+  "freelook.menu.perspective.third": "自由視角設為第三人稱",
+  "freelook.menu.title": "Freelook《自由視角》設定"
 }
