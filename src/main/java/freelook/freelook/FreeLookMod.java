@@ -25,9 +25,9 @@ public class FreeLookMod implements ClientModInitializer {
     private static Perspective lastPerspective;
     private KeyBinding freeLookKeyBind;
     private KeyBinding freeLookScreenKeyBind;
-    private KeyBinding freelookFirstKeyBind;
-    private KeyBinding freelookThirdFrontKeyBind;
-    private KeyBinding freelookThirdBackKeyBind;
+    private KeyBinding freeLookFirstKeyBind;
+    private KeyBinding freeLookThirdFrontKeyBind;
+    private KeyBinding freeLookThirdBackKeyBind;
 
 
     @Override
