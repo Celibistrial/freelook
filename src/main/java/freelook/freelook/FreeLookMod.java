@@ -25,12 +25,21 @@ public class FreeLookMod implements ClientModInitializer {
     private static Perspective lastPerspective;
     private KeyBinding freeLookKeyBind;
     private KeyBinding freeLookScreenKeyBind;
+    private KeyBinding freelookFirstKeyBind;
+    private KeyBinding freelookThirdFrontKeyBind;
+    private KeyBinding freelookThirdBackKeyBind;
+
 
     @Override
     public void onInitializeClient() {
         config.load();
         this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "freelook.key.category"));
         this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "freelook.key.category"));
+        this.freelookFirstKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.first", InputUtil.Type.KEYSM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));
+        this.freelookThirdFrontKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.thirdfront", InputUtil.Type.KEYSM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));       
+        this.freelookThirdBackKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.thirdback", InputUtil.Type.KEYSM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));
+
+
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
@@ -50,6 +59,15 @@ public class FreeLookMod implements ClientModInitializer {
         if (freeLookScreenKeyBind.isPressed()) {
             Screen screen = new FreelookScreen();
             client.setScreen(screen);
+        }
+        if (freeLookFirstKeyBind.wasPressed()) {
+            client.options.setPerspective(1);        
+        }
+        if (freeLookThirdFrontKeyBind.wasPressed()) {
+            client.options.setPerspective(2);        
+        }
+        if (freeLookThirdBackKeyBind.wasPressed()) {
+            client.options.setPerspective(3);        
         }
         if (!config.isBlocked()) {
             if (!config.isToggle()) {
