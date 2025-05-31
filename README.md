@@ -1,7 +1,7 @@
 
 <div align="center">
 
-  ![Downloads](https://img.shields.io/badge/downloads-55k-green.svg)
+  ![Downloads](https://img.shields.io/badge/downloads-550k-green.svg)
   
 </div>
 
