@@ -25,12 +25,21 @@ public class FreeLookMod implements ClientModInitializer {
     private static Perspective lastPerspective;
     private KeyBinding freeLookKeyBind;
     private KeyBinding freeLookScreenKeyBind;
+    private KeyBinding freeLookFirstKeyBind;
+    private KeyBinding freeLookThirdFrontKeyBind;
+    private KeyBinding freeLookThirdBackKeyBind;
+
 
     @Override
     public void onInitializeClient() {
         config.load();
         this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "freelook.key.category"));
         this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "freelook.key.category"));
+        this.freeLookFirstKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.first", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));
+        this.freeLookThirdFrontKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.thirdfront", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));       
+        this.freeLookThirdBackKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.thirdback", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "freelook.key.category"));
+
+
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
@@ -50,6 +59,15 @@ public class FreeLookMod implements ClientModInitializer {
         if (freeLookScreenKeyBind.isPressed()) {
             Screen screen = new FreelookScreen();
             client.setScreen(screen);
+        }
+        if (freeLookFirstKeyBind.wasPressed()) {
+            config.setPerspective(1);        
+        }
+        if (freeLookThirdFrontKeyBind.wasPressed()) {
+            config.setPerspective(2);        
+        }
+        if (freeLookThirdBackKeyBind.wasPressed()) {
+            config.setPerspective(3);        
         }
         if (!config.isBlocked()) {
             if (!config.isToggle()) {
