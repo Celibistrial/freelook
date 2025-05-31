@@ -61,13 +61,13 @@ public class FreeLookMod implements ClientModInitializer {
             client.setScreen(screen);
         }
         if (freeLookFirstKeyBind.wasPressed()) {
-            client.options.setPerspective(1);        
+            config.setPerspective(1);        
         }
         if (freeLookThirdFrontKeyBind.wasPressed()) {
-            client.options.setPerspective(2);        
+            config.setPerspective(2);        
         }
         if (freeLookThirdBackKeyBind.wasPressed()) {
-            client.options.setPerspective(3);        
+            config.setPerspective(3);        
         }
         if (!config.isBlocked()) {
             if (!config.isToggle()) {
