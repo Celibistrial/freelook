@@ -7,5 +7,9 @@
   "freelook.menu.perspective.first": "Freelook is set to first person",
   "freelook.menu.perspective.second": "Freelook is set to second person",
   "freelook.menu.perspective.third": "Freelook is set to third person",
-  "freelook.menu.title": "Freelook Config"
+  "freelook.menu.title": "Freelook Config",
+  "freelook.menu.disabled_servers": "Disabled Servers",
+  "freelook.menu.remove": "Remove",
+  "freelook.menu.add_ip": "Add",
+  "freelook.menu.enter_ip": "Enter IP"
 }

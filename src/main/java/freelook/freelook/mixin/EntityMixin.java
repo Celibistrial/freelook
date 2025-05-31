@@ -13,14 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
 public class EntityMixin implements CameraOverriddenEntity {
-	@Unique
-	private float cameraPitch;
+    @Unique
+    private float cameraPitch;
 
-	@Unique
-	private float cameraYaw;
+    @Unique
+    private float cameraYaw;
 
-	@Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
-	public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
+    @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
+    public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
         //noinspection ConstantValue// IntelliJ is incorrect here, this code block is reachable
         if (FreeLookMod.isFreeLooking && (Object) this instanceof ClientPlayerEntity) {
             double pitchDelta = (yDelta * 0.15);
@@ -34,27 +34,27 @@ public class EntityMixin implements CameraOverriddenEntity {
         }
     }
 
-	@Override
-	@Unique
-	public float freelook$getCameraPitch() {
-		return this.cameraPitch;
-	}
+    @Override
+    @Unique
+    public float freelook$getCameraPitch() {
+        return this.cameraPitch;
+    }
 
-	@Override
-	@Unique
-	public float freelook$getCameraYaw() {
-		return this.cameraYaw;
-	}
+    @Override
+    @Unique
+    public float freelook$getCameraYaw() {
+        return this.cameraYaw;
+    }
 
-	@Override
-	@Unique
-	public void freelook$setCameraPitch(float pitch) {
-		this.cameraPitch = pitch;
-	}
+    @Override
+    @Unique
+    public void freelook$setCameraPitch(float pitch) {
+        this.cameraPitch = pitch;
+    }
 
-	@Override
-	@Unique
-	public void freelook$setCameraYaw(float yaw) {
-		this.cameraYaw = yaw;
-	}
+    @Override
+    @Unique
+    public void freelook$setCameraYaw(float yaw) {
+        this.cameraYaw = yaw;
+    }
 }

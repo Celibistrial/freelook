@@ -7,5 +7,8 @@
   "freelook.menu.perspective.first": "自由視角設為第一人稱",
   "freelook.menu.perspective.second": "自由視角設為第二人稱",
   "freelook.menu.perspective.third": "自由視角設為第三人稱",
-  "freelook.menu.title": "Freelook《自由視角》設定"
+  "freelook.menu.title": "Freelook《自由視角》設定",
+  "freelook.menu.disabled_servers": "禁用的伺服器",
+  "freelook.menu.remove": "消除",
+  "freelook.menu.add_ip": "添加"
 }
