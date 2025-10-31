@@ -13,9 +13,13 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.client.option.KeyBinding.*;
+
 
 @Environment(EnvType.CLIENT)
 public class FreeLookMod implements ClientModInitializer {
@@ -25,12 +29,14 @@ public class FreeLookMod implements ClientModInitializer {
     private static Perspective lastPerspective;
     private KeyBinding freeLookKeyBind;
     private KeyBinding freeLookScreenKeyBind;
+    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("freelook", "freelook"));
+
 
     @Override
     public void onInitializeClient() {
         config.load();
-        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "freelook.key.category"));
-        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "freelook.key.category"));
+        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
+        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
