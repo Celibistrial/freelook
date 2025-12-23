@@ -13,7 +13,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.CameraType;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class FreeLookMod implements ClientModInitializer {
     private static CameraType lastPerspective;
     private KeyMapping freeLookKeyBind;
     private KeyMapping freeLookScreenKeyBind;
-    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("freelook", "freelook"));
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("freelook", "freelook"));
 
 
     @Override
