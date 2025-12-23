@@ -7,18 +7,18 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.CameraType;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.minecraft.client.option.KeyBinding.*;
+import net.minecraft.client.KeyMapping.*;
 
 
 @Environment(EnvType.CLIENT)
@@ -26,22 +26,22 @@ public class FreeLookMod implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("Freelook");
     public static final FreeLookConfig config = new FreeLookConfig();
     public static boolean isFreeLooking = false;
-    private static Perspective lastPerspective;
-    private KeyBinding freeLookKeyBind;
-    private KeyBinding freeLookScreenKeyBind;
-    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("freelook", "freelook"));
+    private static CameraType lastPerspective;
+    private KeyMapping freeLookKeyBind;
+    private KeyMapping freeLookScreenKeyBind;
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("freelook", "freelook"));
 
 
     @Override
     public void onInitializeClient() {
         config.load();
-        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.activate", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
-        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("freelook.key.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
+        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyMapping("freelook.key.activate", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
+        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyMapping("freelook.key.menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
+            ServerData server = Minecraft.getInstance().getCurrentServer();
             if (server != null) {
-                String currentIP = server.address.toLowerCase();
+                String currentIP = server.ip.toLowerCase();
                 for (String blocked : config.getBlockList()) {
                     if (currentIP.contains(blocked.toLowerCase())) {
                         config.setBlocked(true);
@@ -52,40 +52,40 @@ public class FreeLookMod implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(this::onTickEnd);
     }
 
-    private void onTickEnd(MinecraftClient client) {
-        if (freeLookScreenKeyBind.isPressed()) {
+    private void onTickEnd(Minecraft client) {
+        if (freeLookScreenKeyBind.isDown()) {
             Screen screen = new FreelookScreen();
             client.setScreen(screen);
         }
         if (!config.isBlocked()) {
             if (!config.isToggle()) {
-                if (freeLookKeyBind.isPressed() && !isFreeLooking) {
+                if (freeLookKeyBind.isDown() && !isFreeLooking) {
                     startFreeLooking(client);
-                } else if (!freeLookKeyBind.isPressed() && isFreeLooking) {
+                } else if (!freeLookKeyBind.isDown() && isFreeLooking) {
                     stopFreeLooking(client);
                 }
-            } else if (freeLookKeyBind.wasPressed()) {
+            } else if (freeLookKeyBind.consumeClick()) {
                 if (!isFreeLooking) {
                     startFreeLooking(client);
-                } else if (freeLookKeyBind.isPressed()) {
+                } else if (freeLookKeyBind.isDown()) {
                     stopFreeLooking(client);
                 }
             }
         }
     }
 
-    private void startFreeLooking(MinecraftClient client) {
-        lastPerspective = client.options.getPerspective();
+    private void startFreeLooking(Minecraft client) {
+        lastPerspective = client.options.getCameraType();
         // only switch to configured perspective if in first person, looks weird otherwise
-        if (lastPerspective == Perspective.FIRST_PERSON) {
-            client.options.setPerspective(config.getPerspective());
+        if (lastPerspective == CameraType.FIRST_PERSON) {
+            client.options.setCameraType(config.getPerspective());
         }
         isFreeLooking = true;
     }
 
-    private void stopFreeLooking(MinecraftClient client) {
+    private void stopFreeLooking(Minecraft client) {
         isFreeLooking = false;
-        client.options.setPerspective(lastPerspective);
+        client.options.setCameraType(lastPerspective);
     }
 
 }

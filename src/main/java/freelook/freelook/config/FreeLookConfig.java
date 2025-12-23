@@ -3,9 +3,9 @@ package freelook.freelook.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import freelook.freelook.FreeLookMod;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.CameraType;
+import net.minecraft.util.Mth;
 
 import java.io.File;
 import java.io.FileReader;
@@ -53,20 +53,20 @@ public class FreeLookConfig {
         };
     }
 
-    public synchronized Perspective getPerspective() {
+    public synchronized CameraType getPerspective() {
         return switch (perspective) {
-            case 1 -> Perspective.FIRST_PERSON;
-            case 2 -> Perspective.THIRD_PERSON_FRONT;
-            default -> Perspective.THIRD_PERSON_BACK;
+            case 1 -> CameraType.FIRST_PERSON;
+            case 2 -> CameraType.THIRD_PERSON_FRONT;
+            default -> CameraType.THIRD_PERSON_BACK;
         };
     }
 
     public synchronized void setPerspective(int perspective) {
-        this.perspective = MathHelper.clamp(perspective, 1, 3);
+        this.perspective = Mth.clamp(perspective, 1, 3);
     }
 
     public void save() {
-        var folder = new File(MinecraftClient.getInstance().runDirectory, "config");
+        var folder = new File(Minecraft.getInstance().gameDirectory, "config");
         if (!folder.isDirectory() && !folder.mkdirs()) {
             FreeLookMod.LOGGER.error("Failed to create missing config folder");
             return;
@@ -86,7 +86,7 @@ public class FreeLookConfig {
     }
 
     public void load() {
-        var folder = new File(MinecraftClient.getInstance().runDirectory, "config");
+        var folder = new File(Minecraft.getInstance().gameDirectory, "config");
         var file = new File(folder, "freeLook.json");
         if (!file.exists()) {
             reset();

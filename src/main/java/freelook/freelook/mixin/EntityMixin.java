@@ -2,9 +2,9 @@ package freelook.freelook.mixin;
 
 import freelook.freelook.CameraOverriddenEntity;
 import freelook.freelook.FreeLookMod;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,14 +19,14 @@ public class EntityMixin implements CameraOverriddenEntity {
     @Unique
     private float cameraYaw;
 
-    @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
     public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
         //noinspection ConstantValue// IntelliJ is incorrect here, this code block is reachable
-        if (FreeLookMod.isFreeLooking && (Object) this instanceof ClientPlayerEntity) {
+        if (FreeLookMod.isFreeLooking && (Object) this instanceof LocalPlayer) {
             double pitchDelta = (yDelta * 0.15);
             double yawDelta = (xDelta * 0.15);
 
-            this.cameraPitch = MathHelper.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
+            this.cameraPitch = Mth.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
             this.cameraYaw += (float) yawDelta;
 
             ci.cancel();
