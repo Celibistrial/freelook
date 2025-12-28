@@ -22,7 +22,8 @@ public class FreeLookConfig {
 
     private List<String> blockList = new ArrayList<>(List.of(
             "play.hypixel.net",
-            "mc.hypixel.net"
+            "mc.hypixel.net",
+            "hypixel.net"
     ));
 
     public List<String> getBlockList() {
