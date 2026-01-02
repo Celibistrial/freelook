@@ -1,9 +1,13 @@
-
 <div align="center">
 
-  ![Downloads](https://img.shields.io/badge/downloads-550k-green.svg)
-  
+### Modrinth
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/freelook)
+
+### CurseForge
+![CurseForge Downloads](https://img.shields.io/curseforge/dt/498017)
+
 </div>
+
 
 
 # Freelook
@@ -12,7 +16,7 @@ A minecraft mod which allows the user to turn their heads without changing the d
 
 ## Usage
 
-If you simply want to use the mod download it from [here](https://www.curseforge.com/minecraft/mc-mods/freelook-fabric)
+If you simply want to use the mod download it from [here](https://modrinth.com/mod/freelook) or [here](https://www.curseforge.com/minecraft/mc-mods/freelook-fabric)
 
 
 ## Getting Started (Developing)
