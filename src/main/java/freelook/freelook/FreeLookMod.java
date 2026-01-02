@@ -45,11 +45,15 @@ public class FreeLookMod implements ClientModInitializer {
                 for (String blocked : config.getBlockList()) {
                     if (currentIP.contains(blocked.toLowerCase())) {
                         config.setBlocked(true);
+                        break;
                     }
                 }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(this::onTickEnd);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            config.setBlocked(false);
+        });
     }
 
     private void onTickEnd(Minecraft client) {
