@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "freelook.freelook.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
+  "client": [
     "CameraMixin",
     "EntityMixin"
   ],
