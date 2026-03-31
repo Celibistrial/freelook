@@ -10,18 +10,21 @@
   "contributors": [
     "BoBkiNN",
     "Fourmisain",
+    "BoBkiNN_",
+    "CoolAid48",
     "fantahund",
+    "dirtTW",
     "TimDev9492",
     "Siratox",
     "Seeloewen",
-    "dirtTW",
     "notlin4"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
+    "issues": "https://github.com/Celibistrial/freelook/issues",
     "sources": "https://github.com/Celibistrial/freelook"
   },
-  "license": "GNU GPLv3",
+  "license": "AGPL-3.0",
   "icon": "assets/freelook/icon.png",
   "environment": "client",
   "entrypoints": {
@@ -36,9 +39,9 @@
     "freelook.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.11",
-    "minecraft": "1.21.x",
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~26.1",
     "fabric-api": "*",
-    "fabric-key-binding-api-v1": "*"
+    "fabric-key-mapping-api-v1": "*"
   }
 }

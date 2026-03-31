@@ -1,14 +1,11 @@
 package freelook.freelook.mixin;
 
-
 import freelook.freelook.CameraOverriddenEntity;
 import freelook.freelook.FreeLookMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,12 +19,15 @@ public abstract class CameraMixin {
     boolean firstTime = true;
 
     @Shadow
+    private Entity entity;
+
+    @Shadow
     protected abstract void setRotation(float yaw, float pitch);
 
-    @Inject(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V", ordinal = 1, shift = At.Shift.AFTER))
-    public void lockRotation(Level level, Entity cameraEntity, boolean bl, boolean bl2, float f, CallbackInfo ci) {
-        if (FreeLookMod.isFreeLooking && cameraEntity instanceof LocalPlayer) {
-            CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) cameraEntity;
+    @Inject(method = "alignWithEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V", ordinal = 1, shift = At.Shift.AFTER))
+    public void lockRotation(float f, CallbackInfo ci) {
+        if (FreeLookMod.isFreeLooking && this.entity instanceof LocalPlayer) {
+            CameraOverriddenEntity cameraOverriddenEntity = (CameraOverriddenEntity) this.entity;
 
             if (firstTime && Minecraft.getInstance().player != null) {
                 cameraOverriddenEntity.freelook$setCameraPitch(Minecraft.getInstance().player.getXRot());
@@ -37,9 +37,8 @@ public abstract class CameraMixin {
             this.setRotation(cameraOverriddenEntity.freelook$getCameraYaw(), cameraOverriddenEntity.freelook$getCameraPitch());
 
         }
-        if (!FreeLookMod.isFreeLooking && cameraEntity instanceof LocalPlayer) {
+        if (!FreeLookMod.isFreeLooking && this.entity instanceof LocalPlayer) {
             firstTime = true;
         }
     }
-
 }
