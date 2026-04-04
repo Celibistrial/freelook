@@ -5,7 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -35,8 +35,8 @@ public class FreeLookMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         config.load();
-        this.freeLookKeyBind = KeyBindingHelper.registerKeyBinding(new KeyMapping("freelook.key.activate", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
-        this.freeLookScreenKeyBind = KeyBindingHelper.registerKeyBinding(new KeyMapping("freelook.key.menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
+        this.freeLookKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
+        this.freeLookScreenKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerData server = Minecraft.getInstance().getCurrentServer();
