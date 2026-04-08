@@ -28,6 +28,17 @@ public class FreelookScreen extends Screen {
         return Component.translatable(msg);
     }
 
+    private @NotNull Component getControlModeText() {
+        String key = config.isBetterThirdPersonControls()
+                ? "freelook.menu.control_mode.better_third_person"
+                : "freelook.menu.control_mode.classic";
+        return Component.translatable(key);
+    }
+
+    private @NotNull Component getHeadYawLimitText() {
+        return Component.translatable("freelook.menu.head_yaw_limit", (int) config.getMaxHeadYaw());
+    }
+
     @Override
     public void init() {
         config.load();
@@ -46,10 +57,28 @@ public class FreelookScreen extends Screen {
             config.nextPerspective();
             button.setMessage(getPerspectiveText());
         }).bounds(centerX - 100, baseY + lineHeight, 200, 20).build());
+
+        this.addRenderableWidget(new Button.Builder(getControlModeText(), button -> {
+            int nextMode = config.isBetterThirdPersonControls()
+                    ? FreeLookConfig.CONTROL_MODE_CLASSIC
+                    : FreeLookConfig.CONTROL_MODE_BETTER_THIRD_PERSON;
+            config.setControlMode(nextMode);
+            button.setMessage(getControlModeText());
+        }).bounds(centerX - 100, baseY + 2 * lineHeight, 200, 20).build());
+
+        this.addRenderableWidget(new Button.Builder(getHeadYawLimitText(), button -> {
+            float nextLimit = config.getMaxHeadYaw() + 15.0f;
+            if (nextLimit > 180.0f) {
+                nextLimit = 15.0f;
+            }
+            config.setMaxHeadYaw(nextLimit);
+            button.setMessage(getHeadYawLimitText());
+        }).bounds(centerX - 100, baseY + 3 * lineHeight, 200, 20).build());
+
         this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(new DisabledServerScreen(this));
-        }).bounds(centerX - 100, baseY + 2 * lineHeight, 200, 20).build());
+        }).bounds(centerX - 100, baseY + 4 * lineHeight, 200, 20).build());
 
 
     }

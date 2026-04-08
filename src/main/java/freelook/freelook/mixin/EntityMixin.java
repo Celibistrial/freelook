@@ -19,6 +19,12 @@ public class EntityMixin implements CameraOverriddenEntity {
     @Unique
     private float cameraYaw;
 
+    @Unique
+    private float freelookAnchorYaw;
+
+    @Unique
+    private boolean freelookHasAnchor = false;
+
     @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
     public void changeCameraLookDirection(double xDelta, double yDelta, CallbackInfo ci) {
         //noinspection ConstantValue// IntelliJ is incorrect here, this code block is reachable
@@ -26,11 +32,22 @@ public class EntityMixin implements CameraOverriddenEntity {
             double pitchDelta = (yDelta * 0.15);
             double yawDelta = (xDelta * 0.15);
 
+            if (!freelookHasAnchor) {
+                freelookAnchorYaw = this.cameraYaw;
+                freelookHasAnchor = true;
+            }
+
             this.cameraPitch = Mth.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
-            this.cameraYaw += (float) yawDelta;
+            this.cameraYaw = Mth.clamp(
+                    this.cameraYaw + (float) yawDelta,
+                    freelookAnchorYaw - FreeLookMod.config.getMaxHeadYaw(),
+                    freelookAnchorYaw + FreeLookMod.config.getMaxHeadYaw()
+            );
 
             ci.cancel();
 
+        } else if (freelookHasAnchor) {
+            freelookHasAnchor = false;
         }
     }
 
@@ -56,5 +73,7 @@ public class EntityMixin implements CameraOverriddenEntity {
     @Unique
     public void freelook$setCameraYaw(float yaw) {
         this.cameraYaw = yaw;
+        this.freelookAnchorYaw = yaw;
+        this.freelookHasAnchor = true;
     }
 }
