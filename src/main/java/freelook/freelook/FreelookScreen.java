@@ -1,6 +1,7 @@
 package freelook.freelook;
 
 import freelook.freelook.config.FreeLookConfig;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -28,6 +29,43 @@ public class FreelookScreen extends Screen {
         return Component.translatable(msg);
     }
 
+    private @NotNull Component getControlModeText() {
+        String key = config.isBetterThirdPersonControls()
+                ? "freelook.menu.style.better_third_person"
+                : "freelook.menu.style.classic";
+        return Component.translatable(key);
+    }
+
+    private @NotNull Component getHeadYawLimitText() {
+        if (config.getMaxHeadYaw() >= 360.0f) {
+            return Component.translatable("freelook.menu.head_yaw_limit_full");
+        }
+        return Component.translatable("freelook.menu.head_yaw_limit", (int) config.getMaxHeadYaw());
+    }
+
+    private static double toSliderValue(float maxHeadYaw) {
+        int step = switch ((int) maxHeadYaw) {
+            case 30 -> 0;
+            case 60 -> 1;
+            case 90 -> 2;
+            case 120 -> 3;
+            case 360 -> 4;
+            default -> 3;
+        };
+        return step / 4.0d;
+    }
+
+    private static float fromSliderValue(double sliderValue) {
+        int step = (int) Math.round(sliderValue * 4.0d);
+        return switch (step) {
+            case 0 -> 30.0f;
+            case 1 -> 60.0f;
+            case 2 -> 90.0f;
+            case 3 -> 120.0f;
+            default -> 360.0f;
+        };
+    }
+
     @Override
     public void init() {
         config.load();
@@ -46,14 +84,35 @@ public class FreelookScreen extends Screen {
             config.nextPerspective();
             button.setMessage(getPerspectiveText());
         }).bounds(centerX - 100, baseY + lineHeight, 200, 20).build());
+
+        this.addRenderableWidget(new Button.Builder(getControlModeText(), button -> {
+            int nextMode = config.isBetterThirdPersonControls()
+                    ? FreeLookConfig.CONTROL_MODE_CLASSIC
+                    : FreeLookConfig.CONTROL_MODE_BETTER_THIRD_PERSON;
+            config.setControlMode(nextMode);
+            button.setMessage(getControlModeText());
+        }).bounds(centerX - 100, baseY + 2 * lineHeight, 200, 20).build());
+
+        this.addRenderableWidget(new AbstractSliderButton(centerX - 100, baseY + 3 * lineHeight, 200, 20, getHeadYawLimitText(), toSliderValue(config.getMaxHeadYaw())) {
+            @Override
+            protected void updateMessage() {
+                this.setMessage(getHeadYawLimitText());
+            }
+
+            @Override
+            protected void applyValue() {
+                config.setMaxHeadYaw(fromSliderValue(this.value));
+                updateMessage();
+            }
+        });
+
         this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(new DisabledServerScreen(this));
-        }).bounds(centerX - 100, baseY + 2 * lineHeight, 200, 20).build());
+        }).bounds(centerX - 100, baseY + 4 * lineHeight, 200, 20).build());
 
 
     }
-
 
     @Override
     public void removed() {

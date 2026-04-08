@@ -3,14 +3,13 @@
   "id": "freelook",
   "version": "${version}",
   "name": "Freelook",
-  "description": "A mod which allows player to turn their head without changing the direction in which you are moving",
+  "description": "A Minecraft mod which allows the user to turn your head without changing the direction in which you are moving.",
   "authors": [
     "Celibistrial"
   ],
   "contributors": [
     "BoBkiNN",
     "Fourmisain",
-    "BoBkiNN_",
     "CoolAid48",
     "fantahund",
     "dirtTW",
@@ -20,7 +19,7 @@
     "notlin4"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/freelook-fabric",
+    "homepage": "https://modrinth.com/mod/freelook",
     "issues": "https://github.com/Celibistrial/freelook/issues",
     "sources": "https://github.com/Celibistrial/freelook"
   },
