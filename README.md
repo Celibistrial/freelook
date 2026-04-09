@@ -1,19 +1,15 @@
-<div style="display: flex; justify-content: center; gap: 40px; text-align: center;">
-
-<div>
-
-## Modrinth
-![Modrinth Downloads](https://img.shields.io/modrinth/dt/freelook)
-
-</div>
-<div>
-
-## CurseForge
-![CurseForge Downloads](https://img.shields.io/curseforge/dt/498017)
-
-</div>
-
-</div>
+<table align="center">
+  <tr>
+    <td align="center" width="300">
+      <h2 align="center">Modrinth</h2>
+      <img src="https://img.shields.io/modrinth/dt/freelook" />
+    </td>
+    <td align="center" width="300">
+      <h2 align="center">CurseForge</h2>
+      <img src="https://img.shields.io/curseforge/dt/498017" />
+    </td>
+  </tr>
+</table>
 
 # Freelook
 
