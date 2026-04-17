@@ -14,15 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FreeLookConfig {
-    public static final int CONTROL_MODE_CLASSIC = 0;
-    public static final int CONTROL_MODE_BETTER_THIRD_PERSON = 1;
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private boolean isToggle = false;
     private int perspective = 3;
     private float maxHeadYaw = 180.0f;
-    private int controlMode = CONTROL_MODE_CLASSIC;
     private boolean isBlocked = false;
 
     private List<String> blockList = new ArrayList<>(List.of(
@@ -85,18 +81,6 @@ public class FreeLookConfig {
         };
     }
 
-    public synchronized int getControlMode() {
-        return controlMode;
-    }
-
-    public synchronized void setControlMode(int controlMode) {
-        this.controlMode = Mth.clamp(controlMode, CONTROL_MODE_CLASSIC, CONTROL_MODE_BETTER_THIRD_PERSON);
-    }
-
-    public synchronized boolean isBetterThirdPersonControls() {
-        return controlMode == CONTROL_MODE_BETTER_THIRD_PERSON;
-    }
-
     public void save() {
         var folder = new File(Minecraft.getInstance().gameDirectory, "config");
         if (!folder.isDirectory() && !folder.mkdirs()) {
@@ -116,7 +100,6 @@ public class FreeLookConfig {
         setToggle(false);
         setPerspective(3);
         setMaxHeadYaw(180.0f);
-        setControlMode(CONTROL_MODE_CLASSIC);
     }
 
     public void load() {
@@ -131,10 +114,11 @@ public class FreeLookConfig {
             setPerspective(obj.perspective);
             setToggle(obj.isToggle);
             setMaxHeadYaw(obj.maxHeadYaw);
-            setControlMode(obj.controlMode);
             blockList = obj.blockList != null ? new ArrayList<>(obj.blockList) : new ArrayList<>();
         } catch (Exception e) {
             FreeLookMod.LOGGER.error("Failed to read file {}", file.getName(), e);
         }
     }
+
+
 }

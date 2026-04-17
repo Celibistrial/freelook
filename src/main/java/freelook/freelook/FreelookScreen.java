@@ -29,13 +29,6 @@ public class FreelookScreen extends Screen {
         return Component.translatable(msg);
     }
 
-    private @NotNull Component getControlModeText() {
-        String key = config.isBetterThirdPersonControls()
-                ? "freelook.menu.style.better_third_person"
-                : "freelook.menu.style.classic";
-        return Component.translatable(key);
-    }
-
     private @NotNull Component getHeadYawLimitText() {
         if (config.getMaxHeadYaw() >= 360.0f) {
             return Component.translatable("freelook.menu.head_yaw_limit_full");
@@ -85,15 +78,7 @@ public class FreelookScreen extends Screen {
             button.setMessage(getPerspectiveText());
         }).bounds(centerX - 100, baseY + lineHeight, 200, 20).build());
 
-        this.addRenderableWidget(new Button.Builder(getControlModeText(), button -> {
-            int nextMode = config.isBetterThirdPersonControls()
-                    ? FreeLookConfig.CONTROL_MODE_CLASSIC
-                    : FreeLookConfig.CONTROL_MODE_BETTER_THIRD_PERSON;
-            config.setControlMode(nextMode);
-            button.setMessage(getControlModeText());
-        }).bounds(centerX - 100, baseY + 2 * lineHeight, 200, 20).build());
-
-        this.addRenderableWidget(new AbstractSliderButton(centerX - 100, baseY + 3 * lineHeight, 200, 20, getHeadYawLimitText(), toSliderValue(config.getMaxHeadYaw())) {
+        this.addRenderableWidget(new AbstractSliderButton(centerX - 100, baseY + 2 * lineHeight, 200, 20, getHeadYawLimitText(), toSliderValue(config.getMaxHeadYaw())) {
             @Override
             protected void updateMessage() {
                 this.setMessage(getHeadYawLimitText());
@@ -109,10 +94,11 @@ public class FreelookScreen extends Screen {
         this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(new DisabledServerScreen(this));
-        }).bounds(centerX - 100, baseY + 4 * lineHeight, 200, 20).build());
+        }).bounds(centerX - 100, baseY + 3 * lineHeight, 200, 20).build());
 
 
     }
+
 
     @Override
     public void removed() {

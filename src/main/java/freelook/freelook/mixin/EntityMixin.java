@@ -38,7 +38,7 @@ public class EntityMixin implements CameraOverriddenEntity {
             }
 
             this.cameraPitch = Mth.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
-            if (FreeLookMod.config.isBetterThirdPersonControls() || FreeLookMod.config.getMaxHeadYaw() >= 360.0f) {
+            if (FreeLookMod.config.getMaxHeadYaw() >= 360.0f) {
                 this.cameraYaw += (float) yawDelta;
             } else {
                 this.cameraYaw = Mth.clamp(

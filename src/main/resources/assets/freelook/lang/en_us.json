@@ -10,8 +10,6 @@
   "freelook.menu.perspective.first": "Default Perspective: First Person",
   "freelook.menu.perspective.second": "Default Perspective: Second Person",
   "freelook.menu.perspective.third": "Default Perspective: Third Person",
-  "freelook.menu.style.classic": "Freelook Style: Classic",
-  "freelook.menu.style.better_third_person": "Freelook Style: Better Third Person",
   "freelook.menu.head_yaw_limit": "Head Rotation Limit: %s°",
   "freelook.menu.head_yaw_limit_full": "Head Rotation Limit: 360° (Full)",
   "freelook.menu.title": "Freelook Config",

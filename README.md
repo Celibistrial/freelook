@@ -17,9 +17,9 @@
 like you can on Lunar or Badlion client, hold/press the keybind and look around while staying in whichever direction you
 are moving. The view will return when you let go of the key.**
 
-**You can also set a limit for how wide you want to be able to rotate your camera, set alternate keybinds for each
-camera perspective individually, or even change the Freelook style to something more similar
-to [Better Third Person](https://modrinth.com/mod/better-third-person)!**
+**You can also set a limit for how wide you want to be able to rotate your camera, and even set alternate keybinds for
+each
+camera perspective individually!**
 
 ### Classic Freelooking in 3rd person
 

@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "CameraMixin",
-    "EntityMixin",
-    "LocalPlayerMixin"
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

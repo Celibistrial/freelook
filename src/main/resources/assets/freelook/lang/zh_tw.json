@@ -10,8 +10,6 @@
   "freelook.menu.perspective.first": "預設視角：第一人稱",
   "freelook.menu.perspective.second": "預設視角：第二人稱",
   "freelook.menu.perspective.third": "預設視角：第三人稱",
-  "freelook.menu.style.classic": "Freelook 風格：經典",
-  "freelook.menu.style.better_third_person": "Freelook 風格：Better Third Person",
   "freelook.menu.head_yaw_limit": "頭部旋轉限制：%s°",
   "freelook.menu.head_yaw_limit_full": "頭部旋轉限制：360°（完整）",
   "freelook.menu.title": "Freelook 設定",
