@@ -5,6 +5,7 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class FreelookScreen extends Screen {
@@ -37,26 +38,12 @@ public class FreelookScreen extends Screen {
     }
 
     private static double toSliderValue(float maxHeadYaw) {
-        int step = switch ((int) maxHeadYaw) {
-            case 30 -> 0;
-            case 60 -> 1;
-            case 90 -> 2;
-            case 120 -> 3;
-            case 360 -> 4;
-            default -> 3;
-        };
-        return step / 4.0d;
+        return (Mth.clamp(maxHeadYaw, 5.0f, 360.0f) - 5.0f) / 355.0f;
     }
 
     private static float fromSliderValue(double sliderValue) {
-        int step = (int) Math.round(sliderValue * 4.0d);
-        return switch (step) {
-            case 0 -> 30.0f;
-            case 1 -> 60.0f;
-            case 2 -> 90.0f;
-            case 3 -> 120.0f;
-            default -> 360.0f;
-        };
+        float value = (float) (sliderValue * 355.0f + 5.0f);
+        return Math.round(value / 5.0f) * 5.0f;
     }
 
     @Override

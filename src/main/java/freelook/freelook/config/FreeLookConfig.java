@@ -18,7 +18,7 @@ public class FreeLookConfig {
 
     private boolean isToggle = false;
     private int perspective = 3;
-    private float maxHeadYaw = 180.0f;
+    private float maxHeadYaw = 360.0f;
     private boolean isBlocked = false;
 
     private List<String> blockList = new ArrayList<>(List.of(
@@ -70,15 +70,7 @@ public class FreeLookConfig {
     }
 
     public synchronized void setMaxHeadYaw(float maxHeadYaw) {
-        int rounded = Math.round(maxHeadYaw);
-        this.maxHeadYaw = switch (rounded) {
-            case 30 -> 30.0f;
-            case 60 -> 60.0f;
-            case 90 -> 90.0f;
-            case 120 -> 120.0f;
-            case 360 -> 360.0f;
-            default -> 120.0f;
-        };
+        this.maxHeadYaw = Mth.clamp(maxHeadYaw, 5.0f, 360.0f);
     }
 
     public void save() {
@@ -99,7 +91,7 @@ public class FreeLookConfig {
     public void reset() {
         setToggle(false);
         setPerspective(3);
-        setMaxHeadYaw(180.0f);
+        setMaxHeadYaw(360.0f);
     }
 
     public void load() {
