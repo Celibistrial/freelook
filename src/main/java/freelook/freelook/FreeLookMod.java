@@ -50,6 +50,7 @@ public class FreeLookMod implements ClientModInitializer {
             ServerData server = Minecraft.getInstance().getCurrentServer();
             if (server != null) {
                 String currentIP = server.ip.toLowerCase();
+                config.setBlocked(false);
                 for (String blocked : config.getBlockList()) {
                     if (currentIP.contains(blocked.toLowerCase())) {
                         config.setBlocked(true);
