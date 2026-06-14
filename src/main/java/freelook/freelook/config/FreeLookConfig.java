@@ -19,7 +19,7 @@ public class FreeLookConfig {
     private boolean isToggle = false;
     private int perspective = 3;
     private float maxHeadYaw = 360.0f;
-    private boolean isBlocked = false;
+    private transient boolean isBlocked = false;
 
     private List<String> blockList = new ArrayList<>(List.of(
             "hypixel.net"
