@@ -86,8 +86,14 @@ jobs:
           sed -i "s/^fabric_version=.*/fabric_version=$API/" gradle.properties
           sed -i "s/^mod_version=.*/mod_version=$MOD/" gradle.properties
 
+          # Keep fabric.mod.json's minecraft dependency in sync (major.minor, e.g. 26.2.1 -> ~26.2)
+          MM=$(echo "$MC" | cut -d. -f1,2)
+          sed -i "s/\"minecraft\": *\"[^\"]*\"/\"minecraft\": \"~$MM\"/" src/main/resources/fabric.mod.json
+
           echo "Updated gradle.properties:"
           grep -E '^(minecraft|loader|fabric|mod)_version=' gradle.properties
+          echo "Updated fabric.mod.json minecraft dependency:"
+          grep '"minecraft"' src/main/resources/fabric.mod.json
 
       - name: Build
         id: build
@@ -145,7 +151,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add gradle.properties
+          git add gradle.properties src/main/resources/fabric.mod.json
           git commit -m "Update project to Minecraft $MC (v$MOD)"
           git push origin "$BRANCH"
 
