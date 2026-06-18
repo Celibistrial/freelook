@@ -80,7 +80,7 @@ public class FreelookScreen extends Screen {
 
         this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
             assert this.minecraft != null;
-            this.minecraft.setScreen(new DisabledServerScreen(this));
+            this.minecraft.setScreenAndShow(new DisabledServerScreen(this));
         }).bounds(centerX - 100, baseY + 3 * lineHeight, 200, 20).build());
 
 

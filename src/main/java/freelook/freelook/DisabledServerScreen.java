@@ -57,7 +57,7 @@ public class DisabledServerScreen extends Screen {
 
         this.addRenderableWidget(new Button.Builder(Component.translatable("gui.back"), button -> {
             assert this.minecraft != null;
-            this.minecraft.setScreen(parent);
+            this.minecraft.setScreenAndShow(parent);
         }).bounds(centerX - 100, this.height - 40, 200, 20).build());
     }
 
