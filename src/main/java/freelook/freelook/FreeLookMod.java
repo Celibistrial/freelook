@@ -68,7 +68,7 @@ public class FreeLookMod implements ClientModInitializer {
     private void onTickEnd(Minecraft client) {
         if (freeLookScreenKeyBind.consumeClick()) {
             Screen screen = new FreelookScreen();
-            client.setScreen(screen);
+            client.setScreenAndShow(screen);
         }
         if (!config.isBlocked()) {
             if (!config.isToggle()) {

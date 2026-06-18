@@ -90,11 +90,51 @@ jobs:
           grep -E '^(minecraft|loader|fabric|mod)_version=' gradle.properties
 
       - name: Build
+        id: build
         if: steps.check.outputs.needed == 'true'
-        run: ./gradlew build --no-daemon
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ./gradlew build --no-daemon 2>&1 | tee build.log
+
+      - name: Open issue on build failure
+        if: steps.check.outputs.needed == 'true' && steps.build.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MC="${{ steps.latest_mc.outputs.version }}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          TITLE="Auto-update to Minecraft $MC failed to build"
+
+          EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            echo "Issue already open: #$EXISTING — skipping."
+            exit 0
+          fi
+
+          ERRORS=$(grep -E "error:|cannot find symbol|Compilation failed|> Task .* FAILED" build.log | head -40 || true)
+
+          gh issue create \
+            --title "$TITLE" \
+            --body "Automated Minecraft update to \`$MC\` could not build — likely an API/mapping change needing manual source fixes.
+
+          | Property | Value |
+          |---|---|
+          | Minecraft | \`$MC\` |
+          | Fabric Loader | \`${{ steps.fabric.outputs.loader }}\` |
+          | Fabric API | \`${{ steps.fabric.outputs.api }}\` |
+
+          [Failed workflow run]($RUN_URL)
+
+          <details><summary>Build error excerpt</summary>
+
+          \`\`\`
+          $ERRORS
+          \`\`\`
+          </details>"
 
       - name: Create PR
-        if: steps.check.outputs.needed == 'true'
+        if: steps.check.outputs.needed == 'true' && steps.build.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -123,3 +163,9 @@ jobs:
           Build passed. ✓" \
             --base master \
             --head "$BRANCH"
+
+      - name: Fail job if build failed
+        if: steps.check.outputs.needed == 'true' && steps.build.outcome == 'failure'
+        run: |
+          echo "Build failed for the auto-update; an issue was opened. Failing the job."
+          exit 1
