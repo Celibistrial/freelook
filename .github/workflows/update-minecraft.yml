@@ -59,8 +59,14 @@ jobs:
           API=$(curl -sf "https://api.modrinth.com/v2/project/fabric-api/version?game_versions=%5B%22$MC%22%5D&loaders=%5B%22fabric%22%5D" | \
             jq -r 'first | .version_number')
 
+          # Mod Menu is a runtime dependency that must match the MC version, else the
+          # client compiles but crashes on the title screen (e.g. removed I18n.exists).
+          MODMENU=$(curl -sf "https://api.modrinth.com/v2/project/modmenu/version?game_versions=%5B%22$MC%22%5D&loaders=%5B%22fabric%22%5D" | \
+            jq -r 'first | .version_number')
+
           echo "loader=$LOADER" >> $GITHUB_OUTPUT
           echo "api=$API" >> $GITHUB_OUTPUT
+          echo "modmenu=$MODMENU" >> $GITHUB_OUTPUT
 
       - name: Bump mod version (patch)
         id: mod_version
@@ -80,18 +86,26 @@ jobs:
           LOADER="${{ steps.fabric.outputs.loader }}"
           API="${{ steps.fabric.outputs.api }}"
           MOD="${{ steps.mod_version.outputs.version }}"
+          MODMENU="${{ steps.fabric.outputs.modmenu }}"
 
           sed -i "s/^minecraft_version=.*/minecraft_version=$MC/" gradle.properties
           sed -i "s/^loader_version=.*/loader_version=$LOADER/" gradle.properties
           sed -i "s/^fabric_version=.*/fabric_version=$API/" gradle.properties
           sed -i "s/^mod_version=.*/mod_version=$MOD/" gradle.properties
 
+          # Only bump Mod Menu when a compatible build exists; never write an empty/null.
+          if [ -n "$MODMENU" ] && [ "$MODMENU" != "null" ]; then
+            sed -i "s/^modmenu_version=.*/modmenu_version=$MODMENU/" gradle.properties
+          else
+            echo "WARNING: no Mod Menu build found for $MC; leaving modmenu_version unchanged."
+          fi
+
           # Keep fabric.mod.json's minecraft dependency in sync (major.minor, e.g. 26.2.1 -> ~26.2)
           MM=$(echo "$MC" | cut -d. -f1,2)
           sed -i "s/\"minecraft\": *\"[^\"]*\"/\"minecraft\": \"~$MM\"/" src/main/resources/fabric.mod.json
 
           echo "Updated gradle.properties:"
-          grep -E '^(minecraft|loader|fabric|mod)_version=' gradle.properties
+          grep -E '^(minecraft|loader|fabric|mod|modmenu)_version=' gradle.properties
           echo "Updated fabric.mod.json minecraft dependency:"
           grep '"minecraft"' src/main/resources/fabric.mod.json
 
