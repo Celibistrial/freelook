@@ -27,17 +27,11 @@ jobs:
           echo "mc=$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)" >> $GITHUB_OUTPUT
           echo "mod=$(grep '^mod_version=' gradle.properties | cut -d= -f2)" >> $GITHUB_OUTPUT
 
-      - name: Fetch next stable Minecraft version
+      - name: Fetch latest stable Minecraft version
         id: latest_mc
         run: |
-          # Step one version at a time (not straight to newest) so that when we are
-          # several versions behind, each intermediate version gets built & published.
-          # The list is newest-first, so "next after current" = the entry before it.
           LATEST=$(curl -sf https://meta.fabricmc.net/v2/versions/game | \
-            jq -r --arg cur "${{ steps.current.outputs.mc }}" \
-              '[.[] | select(.stable == true) | .version] as $v |
-               ($v | index($cur)) as $i |
-               if $i == null or $i == 0 then $v[0] else $v[$i - 1] end')
+            jq -r '[.[] | select(.stable == true)] | first | .version')
           echo "version=$LATEST" >> $GITHUB_OUTPUT
 
       - name: Check if update needed
