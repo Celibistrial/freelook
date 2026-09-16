@@ -16,7 +16,8 @@
     "TimDev9492",
     "Siratox",
     "Seeloewen",
-    "notlin4"
+    "notlin4",
+	"mykelsarchive"
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/freelook",
@@ -39,7 +40,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.18.4",
-    "minecraft": "~26.2",
+    "minecraft": "~26.3",
     "fabric-api": "*",
     "fabric-key-mapping-api-v1": "*"
   }

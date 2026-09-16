@@ -14,12 +14,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.CameraType;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.client.KeyMapping.*;
-
 
 @Environment(EnvType.CLIENT)
 public class FreeLookMod implements ClientModInitializer {
@@ -40,11 +36,12 @@ public class FreeLookMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         config.load();
-        this.freeLookKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY));
+        
+        this.freeLookKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate", InputConstants.Type.KEYBOARD, InputConstants.KEY_LALT, CATEGORY));
         this.freeLookFirstPersonKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate_first_person", InputConstants.UNKNOWN.getValue(), CATEGORY));
         this.freeLookSecondPersonKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate_second_person", InputConstants.UNKNOWN.getValue(), CATEGORY));
         this.freeLookThirdPersonKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.activate_third_person", InputConstants.UNKNOWN.getValue(), CATEGORY));
-        this.freeLookScreenKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY));
+        this.freeLookScreenKeyBind = KeyMappingHelper.registerKeyMapping(new KeyMapping("freelook.key.menu", InputConstants.Type.KEYBOARD, InputConstants.KEY_M, CATEGORY));
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerData server = Minecraft.getInstance().getCurrentServer();
