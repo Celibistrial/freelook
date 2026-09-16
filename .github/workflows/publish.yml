@@ -2,7 +2,9 @@ name: Publish
 
 # Fully automatic: publishes whenever gradle.properties lands on master with a
 # mod_version that has not been released yet (e.g. after the auto-update PR is
-# merged). Guarded by a git tag so re-runs / unrelated edits never double-publish.
+# merged). Each destination is guarded on its own, so re-running after a partial
+# failure (Modrinth 500s once CurseForge has already accepted the file) resumes
+# where it stopped instead of uploading a duplicate.
 on:
   push:
     branches: [master]
@@ -29,35 +31,53 @@ jobs:
           echo "mc=$MC" >> $GITHUB_OUTPUT
           echo "tag=v$MOD" >> $GITHUB_OUTPUT
 
-      - name: Skip if version already published
-        id: guard
+      - name: Work out what still needs publishing
+        id: todo
         run: |
-          if git rev-parse "refs/tags/${{ steps.vars.outputs.tag }}" >/dev/null 2>&1; then
-            echo "Tag ${{ steps.vars.outputs.tag }} exists — already published. Skipping."
-            echo "publish=false" >> $GITHUB_OUTPUT
+          MOD="${{ steps.vars.outputs.mod }}"
+
+          # Modrinth lists published versions publicly, so ask it directly.
+          # A failed curl aborts the step rather than risking a duplicate upload.
+          VERSIONS=$(curl -sf --retry 3 "https://api.modrinth.com/v2/project/freelook/version")
+          if jq -e --arg v "$MOD" 'any(.[]; .version_number == $v)' <<<"$VERSIONS" >/dev/null; then
+            MODRINTH=false
           else
-            echo "publish=true" >> $GITHUB_OUTPUT
+            MODRINTH=true
+          fi
+
+          # CurseForge's upload API has no "list my files" endpoint, so record a
+          # successful upload with a marker tag and use that tag as the guard.
+          git rev-parse "refs/tags/curseforge/$MOD" >/dev/null 2>&1 && CURSEFORGE=false || CURSEFORGE=true
+
+          git rev-parse "refs/tags/v$MOD" >/dev/null 2>&1 && RELEASE=false || RELEASE=true
+
+          echo "modrinth=$MODRINTH" >> $GITHUB_OUTPUT
+          echo "curseforge=$CURSEFORGE" >> $GITHUB_OUTPUT
+          echo "release=$RELEASE" >> $GITHUB_OUTPUT
+
+          if [ "$MODRINTH$CURSEFORGE$RELEASE" = "falsefalsefalse" ]; then
+            echo "any=false" >> $GITHUB_OUTPUT
+            echo "$MOD is already on Modrinth, CurseForge and GitHub. Nothing to do."
+          else
+            echo "any=true" >> $GITHUB_OUTPUT
+            echo "Still to publish for $MOD: modrinth=$MODRINTH curseforge=$CURSEFORGE release=$RELEASE"
           fi
 
       - name: Set up Java
-        if: steps.guard.outputs.publish == 'true'
+        if: steps.todo.outputs.any == 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
 
       - name: Build
-        if: steps.guard.outputs.publish == 'true'
+        if: steps.todo.outputs.any == 'true'
         run: ./gradlew build --no-daemon
 
-      - name: Publish to Modrinth & CurseForge
-        if: steps.guard.outputs.publish == 'true'
+      - name: Publish to CurseForge
+        if: steps.todo.outputs.curseforge == 'true'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          modrinth-id: freelook
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-
-          # TODO: replace with the numeric CurseForge project id (Project page → "About" → Project ID)
           curseforge-id: ${{ vars.CURSEFORGE_PROJECT_ID }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
@@ -70,8 +90,32 @@ jobs:
             fabric-api
           files: build/libs/!(*-sources).jar
 
+      - name: Mark CurseForge as published
+        if: steps.todo.outputs.curseforge == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "curseforge/${{ steps.vars.outputs.mod }}"
+          git push origin "curseforge/${{ steps.vars.outputs.mod }}"
+
+      - name: Publish to Modrinth
+        if: steps.todo.outputs.modrinth == 'true'
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: freelook
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          name: Freelook ${{ steps.vars.outputs.mod }} for ${{ steps.vars.outputs.mc }}
+          version: ${{ steps.vars.outputs.mod }}
+          version-type: release
+          loaders: fabric
+          game-versions: ${{ steps.vars.outputs.mc }}
+          dependencies: |
+            fabric-api
+          files: build/libs/!(*-sources).jar
+
       - name: Tag and GitHub release
-        if: steps.guard.outputs.publish == 'true'
+        if: steps.todo.outputs.release == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
