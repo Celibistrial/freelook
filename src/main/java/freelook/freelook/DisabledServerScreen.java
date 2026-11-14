@@ -28,7 +28,7 @@ public class DisabledServerScreen extends Screen {
         this.addWidget(ipField);
         this.addRenderableWidget(ipField);
 
-        this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.add_ip"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("freelook.menu.add_ip"), button -> {
             String ip = ipField.getValue().trim();
             if (!ip.isEmpty() && !config.getBlockList().contains(ip)) {
                 config.getBlockList().add(ip);
@@ -43,10 +43,10 @@ public class DisabledServerScreen extends Screen {
         for (String ip : config.getBlockList()) {
             int y = listStartY + i * lineHeight;
 
-            this.addRenderableWidget(new Button.Builder(Component.literal(ip), b -> {
+            this.addRenderableWidget(Button.builder(Component.literal(ip), b -> {
             }).bounds(centerX - 100, y, 140, 20).build());
 
-            this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.remove"), button -> {
+            this.addRenderableWidget(Button.builder(Component.translatable("freelook.menu.remove"), button -> {
                 config.getBlockList().remove(ip);
                 config.save();
                 this.init();
@@ -55,7 +55,7 @@ public class DisabledServerScreen extends Screen {
             i++;
         }
 
-        this.addRenderableWidget(new Button.Builder(Component.translatable("gui.back"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.back"), button -> {
             assert this.minecraft != null;
             this.minecraft.setScreenAndShow(parent);
         }).bounds(centerX - 100, this.height - 40, 200, 20).build());

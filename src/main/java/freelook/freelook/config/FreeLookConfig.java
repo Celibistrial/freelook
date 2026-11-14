@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import freelook.freelook.FreeLookMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.CameraType;
-import net.minecraft.util.Mth;
 
 import java.io.File;
 import java.io.FileReader;
@@ -62,7 +61,7 @@ public class FreeLookConfig {
     }
 
     public synchronized void setPerspective(int perspective) {
-        this.perspective = Mth.clamp(perspective, 1, 3);
+        this.perspective = Math.clamp(perspective, 1, 3);
     }
 
     public synchronized float getMaxHeadYaw() {
@@ -70,7 +69,7 @@ public class FreeLookConfig {
     }
 
     public synchronized void setMaxHeadYaw(float maxHeadYaw) {
-        this.maxHeadYaw = Mth.clamp(maxHeadYaw, 5.0f, 360.0f);
+        this.maxHeadYaw = Math.clamp(maxHeadYaw, 5.0f, 360.0f);
     }
 
     public void save() {

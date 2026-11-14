@@ -4,7 +4,6 @@ import freelook.freelook.CameraOverriddenEntity;
 import freelook.freelook.FreeLookMod;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,11 +36,11 @@ public class EntityMixin implements CameraOverriddenEntity {
                 freelookHasAnchor = true;
             }
 
-            this.cameraPitch = Mth.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
+            this.cameraPitch = Math.clamp(this.cameraPitch + (float) pitchDelta, -90.0f, 90.0f);
             if (FreeLookMod.config.getMaxHeadYaw() >= 360.0f) {
                 this.cameraYaw += (float) yawDelta;
             } else {
-                this.cameraYaw = Mth.clamp(
+                this.cameraYaw = Math.clamp(
                         this.cameraYaw + (float) yawDelta,
                         freelookAnchorYaw - FreeLookMod.config.getMaxHeadYaw(),
                         freelookAnchorYaw + FreeLookMod.config.getMaxHeadYaw()

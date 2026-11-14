@@ -5,7 +5,6 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class FreelookScreen extends Screen {
@@ -38,7 +37,7 @@ public class FreelookScreen extends Screen {
     }
 
     private static double toSliderValue(float maxHeadYaw) {
-        return (Mth.clamp(maxHeadYaw, 5.0f, 360.0f) - 5.0f) / 355.0f;
+        return (Math.clamp(maxHeadYaw, 5.0f, 360.0f) - 5.0f) / 355.0f;
     }
 
     private static float fromSliderValue(double sliderValue) {
@@ -55,12 +54,12 @@ public class FreelookScreen extends Screen {
         int baseY = this.height / 2 - 100;
         int lineHeight = 25;
 
-        this.addRenderableWidget(new Button.Builder(getModeText(), button -> {
+        this.addRenderableWidget(Button.builder(getModeText(), button -> {
             config.setToggle(!config.isToggle());
             button.setMessage(getModeText());
         }).bounds(centerX - 100, baseY, 200, 20).build());
 
-        this.addRenderableWidget(new Button.Builder(getPerspectiveText(), button -> {
+        this.addRenderableWidget(Button.builder(getPerspectiveText(), button -> {
             config.nextPerspective();
             button.setMessage(getPerspectiveText());
         }).bounds(centerX - 100, baseY + lineHeight, 200, 20).build());
@@ -78,7 +77,7 @@ public class FreelookScreen extends Screen {
             }
         });
 
-        this.addRenderableWidget(new Button.Builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("freelook.menu.disabled_servers"), button -> {
             assert this.minecraft != null;
             this.minecraft.setScreenAndShow(new DisabledServerScreen(this));
         }).bounds(centerX - 100, baseY + 3 * lineHeight, 200, 20).build());
